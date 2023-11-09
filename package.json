@@ -35,6 +35,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "homepage": "https://wouterversyck.github.io/guitar-buddy",
   "eslintConfig": {
     "extends": [
       "react-app",
