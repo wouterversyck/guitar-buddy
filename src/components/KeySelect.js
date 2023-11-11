@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { FormControl, MenuItem, Select } from "@mui/material";
+import { MenuItem, Select } from "@mui/material";
 import { beautifyNote, keys, modes } from "../services/helper-functions";
 import { Mode } from "tonal";
 

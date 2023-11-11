@@ -24,7 +24,7 @@ export default function Strings({scale}) {
   const data = createStringsForScale(scale, tuning.tuning);
 
   return(
-    <div className="strings__container">
+    <div>
       <FormControlLabel control={
         <Switch
           color="secondary"
@@ -39,9 +39,10 @@ export default function Strings({scale}) {
         onChange={handleTuningChange}>
           {getTunings().map(tuning => <MenuItem value={tuning} key={tuning.label}>{tuning.label}</MenuItem>)}
       </Select>
-
-      <div style={{marginTop: '20px', marginLeft: '10px'}}>
-        {data.map((string, index) => <SingleString key={index} notes={string} root={scale[0]} position={index} showNotes={showNotes}/>)}
+      <div className="strings__container">
+        <div style={{marginTop: '20px', marginLeft: '10px'}}>
+          {data.map((string, index) => <SingleString key={index} notes={string} root={scale[0]} position={index} showNotes={showNotes}/>)}
+        </div>
       </div>
     </div>
   );
