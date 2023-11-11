@@ -16,3 +16,7 @@ export const keys = [
 export const modes = [
   "major", "dorian", "phrygian", "lydian", "mixolydian", "minor", "locrian"
 ]
+
+export function beautifyNote(note) {
+  return note.replace("b", "♭").replace("#", "♯");
+}

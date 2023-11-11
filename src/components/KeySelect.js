@@ -1,43 +1,50 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { FormControl, MenuItem, Select } from "@mui/material";
-import { keys, modes } from "../services/helper-functions";
+import { beautifyNote, keys, modes } from "../services/helper-functions";
+import { Mode } from "tonal";
 
-export default function KeySelect({musicKey: key, setKey, mode, setMode}) {
+export default function useKeySelect() {
+  const [keyValue, setKeyValue] = React.useState(keys[0]);
+  const [modeValue, setModeValue] = React.useState(modes[0]);
+  const [mode, setMode] = React.useState();
+
+  useEffect(() => {
+    const mode = {
+      mode: modeValue,
+      key: keyValue,
+      notes: Mode.notes(modeValue, keyValue),
+      chords: Mode.triads(modeValue, keyValue),
+      seventChords: Mode.seventhChords(modeValue, keyValue)
+    }
+
+    setMode(mode);
+  }, [modeValue, keyValue])
+
   const handleKeyChange = (event) => {
-    setKey(event.target.value);
+    setKeyValue(event.target.value);
   };
   const handleModeChange = (event) => {
-    setMode(event.target.value);
+    setModeValue(event.target.value);
   };
-  return (
+
+  const component = () => (
     <FormControl fullWidth>
       <Select
         id="key"
-        value={key}
+        value={keyValue}
         onChange={handleKeyChange}>
-          {keys.map(e => <MenuItem value={e}>{e}</MenuItem>)}
+          {keys.map(e => <MenuItem value={e}>{beautifyNote(e)}</MenuItem>)}
       </Select>
       <Select
           id="mode"
-          value={mode}
+          value={modeValue}
           onChange={handleModeChange}
       >
-          {modes.map(e => <MenuItem value={e}>{e}</MenuItem>)}
+          {modes.map(e => <MenuItem value={e}>{beautifyNote(e)}</MenuItem>)}
       </Select>
     </FormControl>
   )
-}
 
-
-export function useKeySelect() {
-  const [key, setKey] = React.useState(keys[0]);
-
-  return [key, setKey];
-}
-
-export function useModeSelect() {
-  const [mode, setMode] = React.useState(modes[0]);
-
-  return [mode, setMode];
+  return [component, mode]
 }

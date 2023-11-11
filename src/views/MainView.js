@@ -1,16 +1,24 @@
 import React from "react";
 import { Container } from "@mui/material";
-import Chords from "../components/chords/Chords.js";
-import KeySelect, { useKeySelect, useModeSelect } from "../components/KeySelect.js";
+import Chords from "../components/Chords.js";
+import Strings from "../components/Strings";
+import useKeySelect from "../components/KeySelect.js";
 
 export default function MainView() {
 
-  const [key, setKey] = useKeySelect();
-  const [mode, setMode] = useModeSelect();
+  const [KeySelect, mode] = useKeySelect();
 
   return (
     <Container maxWidth="sm">
-      <KeySelect musicKey={key} setKey={setKey} mode={mode} setMode={setMode} />
-      <Chords mode={mode} musicKey={key} />
+      <KeySelect />
+      {mode ? (
+        <>
+          <Chords mode={mode} />
+          <Strings scale={mode.notes} />
+        </>
+      ) : (
+        <span>Please select a scale</span>
+      )}
+
     </Container>);
 }
