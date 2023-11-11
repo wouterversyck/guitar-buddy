@@ -12,7 +12,7 @@ function calcIndicator(position, index) {
   );
 }
 
-export default function Strings({scale}) {
+export default function Strings({ mode }) {
   const [showNotes, setShowNotes] = useState(false);
   const [tuning, setTuning] = useState(tunings.standard);
   const handleShowNotesToggle = (event) => {
@@ -21,7 +21,7 @@ export default function Strings({scale}) {
   const handleTuningChange = (event) => {
     setTuning(event.target.value);
   };
-  const data = createStringsForScale(scale, tuning.tuning);
+  const data = createStringsForScale(mode.notes, tuning.tuning);
 
   return(
     <div>
@@ -41,14 +41,14 @@ export default function Strings({scale}) {
       </Select>
       <div className="strings__container">
         <div style={{marginTop: '20px', marginLeft: '10px'}}>
-          {data.map((string, index) => <SingleString key={index} notes={string} root={scale[0]} position={index} showNotes={showNotes}/>)}
+          {data.map((string, index) => <SingleString key={index} notes={string} mode={mode} position={index} showNotes={showNotes}/>)}
         </div>
       </div>
     </div>
   );
 }
 
-function SingleString({notes, position, root, showNotes}) {
+function SingleString({notes, position, mode, showNotes}) {
     return (
         <div className={`string string--nr-${position}`}>
           {notes.map((note, index) =>
@@ -58,7 +58,7 @@ function SingleString({notes, position, root, showNotes}) {
                 { calcIndicator(position, index) &&
                   <span className="string__nr-indicator"></span> }
               <div
-                className={calculateClasses(note, root)}
+                className={calculateClasses(note, mode)}
                 onClick={() =>  note && soundNote(note)}>
                   {showNotes && beautifyNote(note?.note)}
               </div>
@@ -68,15 +68,72 @@ function SingleString({notes, position, root, showNotes}) {
     );
 }
 
-function calculateClasses(note, root) {
+function calculateClasses(note, mode) {
   let classes = "string__note";
 
-  if (note) {
-    classes += " string__note--present";
+  if (!note) {
+    return classes;
   }
-  if (note?.note === root) {
+
+  classes += " string__note--present";
+  if (note?.note === mode.notes[0]) {
     classes += " string__note--root";
+  }
+  if (isThird(mode, note.note)) {
+    classes += " string__note--third";
+  }
+  if (isBlue(mode, note.note)) {
+    classes += " string__note--blue";
+  }
+  if (isFifth(mode, note.note)) {
+    classes += " string__note--fifth";
+  }
+  if (isSeventh(mode, note.note)) {
+    classes += " string__note--seventh";
   }
 
   return classes;
+}
+
+function isThird(mode, note) {
+  const { notes, intervals } = mode;
+  let index = intervals.indexOf("3m");
+  if (index === -1) {
+    index = intervals.indexOf("3M");
+  }
+  if (index === -1) {
+    return false;
+  }
+  return notes[index] === note;
+}
+
+function isSeventh(mode, note) {
+  const { notes, intervals } = mode;
+  let index = intervals.indexOf("7m");
+  if (index === -1) {
+    index = intervals.indexOf("7M");
+  }
+  if (index === -1) {
+    return false;
+  }
+  return notes[index] === note;
+}
+
+function isFifth(mode, note) {
+  const { notes, intervals } = mode;
+  let index = intervals.indexOf("5P");
+  if (index === -1) {
+    return false;
+  }
+  return notes[index] === note;
+}
+
+
+function isBlue(mode, note) {
+  const { notes, intervals } = mode;
+  let index = intervals.indexOf("5d");
+  if (index === -1) {
+    return false;
+  }
+  return notes[index] === note;
 }

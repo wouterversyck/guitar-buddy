@@ -24,7 +24,7 @@ export default function MainView() {
         <Box sx={{ mt: 5 }}>
           <Chords mode={mode} />
           <Box sx={{ mt: 5 }}>
-            <StyledString scale={mode.notes} />
+            <StyledString mode={mode} />
           </Box>
         </Box>
       ) : (

@@ -24,11 +24,23 @@
       cursor: pointer;
     }
 
-    &.string__note--present:not(.string__note--root) {
+    &.string__note--present:not(.string__note--root):not(.string__note--third):not(.string__note--fifth):not(.string__note--seventh):not(.string__note--blue) {
       background: black;
     }
     &.string__note--root {
       background: red;
+    }
+    &.string__note--third {
+      background: green;
+    }
+    &.string__note--blue {
+      background: blue;
+    }
+    &.string__note--fifth {
+      background: purple;
+    }
+    &.string__note--seventh {
+      background: orange;
     }
   }
 

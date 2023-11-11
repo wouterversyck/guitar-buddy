@@ -14,7 +14,9 @@ export const keys = [
 ];
 
 export const modes = [
-  "major", "dorian", "phrygian", "lydian", "mixolydian", "minor", "locrian"
+  "major", "dorian", "phrygian", "lydian", "mixolydian", "minor",
+  "locrian", "pentatonic", "minor pentatonic", "major blues", "minor blues", "double harmonic major",
+  "persian", "egyptian", "ritusen"
 ]
 
 export function beautifyNote(note) {
