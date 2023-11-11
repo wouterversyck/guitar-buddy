@@ -29,21 +29,21 @@ export default function useKeySelect() {
   };
 
   const component = () => (
-    <FormControl fullWidth>
+    <div>
       <Select
         id="key"
         value={keyValue}
         onChange={handleKeyChange}>
-          {keys.map(e => <MenuItem value={e}>{beautifyNote(e)}</MenuItem>)}
+          {keys.map(e => <MenuItem value={e} key={e}>{beautifyNote(e)}</MenuItem>)}
       </Select>
       <Select
           id="mode"
           value={modeValue}
           onChange={handleModeChange}
       >
-          {modes.map(e => <MenuItem value={e}>{beautifyNote(e)}</MenuItem>)}
+          {modes.map(e => <MenuItem value={e} key={e}>{beautifyNote(e)}</MenuItem>)}
       </Select>
-    </FormControl>
+    </div>
   )
 
   return [component, mode]

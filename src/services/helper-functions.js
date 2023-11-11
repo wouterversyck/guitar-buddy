@@ -18,5 +18,8 @@ export const modes = [
 ]
 
 export function beautifyNote(note) {
+  if(!note) {
+    return;
+  }
   return note.replace("b", "♭").replace("#", "♯");
 }

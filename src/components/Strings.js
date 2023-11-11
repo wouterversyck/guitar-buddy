@@ -1,115 +1,81 @@
+import "./Strings.css";
 import { beautifyNote } from "../services/helper-functions";
+import { soundNote } from "../services/audio-service";
+import { createStringsForScale, getTunings, tunings } from "./helper-functions";
+import { Switch, FormControlLabel, Select, MenuItem } from "@mui/material";
+import { useState } from "react";
+
+function calcIndicator(position, index) {
+  return (
+    (position === 2 && (index === 3 || index === 5 || index === 7 || index === 9 || index === 15 || index === 17 || index === 19 || index === 21)) ||
+    ((position === 1 || position === 3) && index === 12)
+  );
+}
 
 export default function Strings({scale}) {
-    const data = createStringsForScale(scale, tunings.full_step_down.tuning);
-    return(
-        <>
-            {data.map((string, index) => <SingleString notes={string} position={index} />)}
-        </>
-    );
+  const [showNotes, setShowNotes] = useState(false);
+  const [tuning, setTuning] = useState(tunings.standard);
+  const handleShowNotesToggle = (event) => {
+    setShowNotes(event.target.checked);
+  };
+  const handleTuningChange = (event) => {
+    setTuning(event.target.value);
+  };
+  const data = createStringsForScale(scale, tuning.tuning);
+
+  return(
+    <div className="strings__container">
+      <FormControlLabel control={
+        <Switch
+          color="secondary"
+          checked={showNotes}
+          inputProps={{ 'aria-label': 'Color switch demo' }}
+          onChange={handleShowNotesToggle}
+        />
+      } label="Show notes" />
+      <Select
+        id="tuning"
+        value={tuning}
+        onChange={handleTuningChange}>
+          {getTunings().map(tuning => <MenuItem value={tuning} key={tuning.label}>{tuning.label}</MenuItem>)}
+      </Select>
+
+      <div style={{marginTop: '20px', marginLeft: '10px'}}>
+        {data.map((string, index) => <SingleString key={index} notes={string} root={scale[0]} position={index} showNotes={showNotes}/>)}
+      </div>
+    </div>
+  );
 }
 
-function SingleString({notes, position}) {
+function SingleString({notes, position, root, showNotes}) {
     return (
-        <div>{notes.map(note => <span>{note ? beautifyNote(note.note) : "-"}</span>)}</div>
+        <div className={`string string--nr-${position}`}>
+          {notes.map((note, index) =>
+            <div
+              className="string__fret"
+              key={note + index}>
+                { calcIndicator(position, index) &&
+                  <span className="string__nr-indicator"></span> }
+              <div
+                className={calculateClasses(note, root)}
+                onClick={() =>  note && soundNote(note)}>
+                  {showNotes && beautifyNote(note?.note)}
+              </div>
+            </div>
+          )}
+        </div>
     );
 }
 
-// Go over all 24 frets and calculate if a note of the scale is found at the fret for this string
-function getStringWithStartingPoint(startingPoint, height, scale) {
-    const notes = [];
+function calculateClasses(note, root) {
+  let classes = "string__note";
 
-    for (let i = 0; i < 24; i++) {
-        let found = false;
-        const numericNote = (i + startingPoint) % 12;
-        if (numericNote === 0) {
-            height++;
-        }
-        for (const note of scale) {
-            if (numericKeys[note] === numericNote) {
-                notes[i] = {
-                    note,
-                    height,
-                };
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            notes[i] = null;
-        }
-    }
+  if (note) {
+    classes += " string__note--present";
+  }
+  if (note?.note === root) {
+    classes += " string__note--root";
+  }
 
-    return notes;
+  return classes;
 }
-
-// Create an array of strings with notes present for a certain scale and tuning
-export function createStringsForScale(scale, tuning) {
-    return [
-        getStringWithStartingPoint(numericKeys[tuning.HighE], 4, scale), // High E
-        getStringWithStartingPoint(numericKeys[tuning.B], 3, scale), // B
-        getStringWithStartingPoint(numericKeys[tuning.G], 3, scale), // G
-        getStringWithStartingPoint(numericKeys[tuning.D], 3, scale), // D
-        getStringWithStartingPoint(numericKeys[tuning.A], 2, scale), // A
-        getStringWithStartingPoint(numericKeys[tuning.LowE], 2, scale), // Low E
-    ]
-}
-
-export const tunings = {
-    standard: {
-        label: "Standard",
-        tuning: {
-            HighE: "E",
-            B: "B",
-            G: "G",
-            D: "D",
-            A: "A",
-            LowE: "E"
-        }
-    },
-    half_step_down: {
-        label: "Half step down",
-        tuning: {
-            HighE: "Eb",
-            B: "Bb",
-            G: "Gb",
-            D: "Db",
-            A: "Ab",
-            LowE: "Eb"
-        }
-    },
-    full_step_down: {
-        label: "Full step down",
-        tuning: {
-            HighE: "D",
-            B: "G",
-            G: "F",
-            D: "C",
-            A: "G",
-            LowE: "D"
-        }
-    }
-}
-
-export const numericKeys = {
-    "B#": 0,
-    "C": 0,
-    "C#": 1,
-    "Db": 1,
-    "D": 2,
-    "D#": 3,
-    "Eb": 3,
-    "E": 4,
-    "Fb": 4,
-    "F": 5,
-    "E#": 5,
-    "F#": 6,
-    "Gb": 6,
-    "G": 7,
-    "G#": 8,
-    "Ab": 8,
-    "A": 9,
-    "A#": 10,
-    "Bb": 10,
-    "B": 11,
-};
