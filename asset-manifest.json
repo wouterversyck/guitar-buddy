@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/guitar-buddy/static/css/main.e3878ee8.css",
-    "main.js": "/guitar-buddy/static/js/main.ff6fa379.js",
+    "main.css": "/guitar-buddy/static/css/main.c51c1dec.css",
+    "main.js": "/guitar-buddy/static/js/main.1430bc0f.js",
     "static/js/787.97fc553e.chunk.js": "/guitar-buddy/static/js/787.97fc553e.chunk.js",
     "service-worker.js": "/guitar-buddy/service-worker.js",
     "index.html": "/guitar-buddy/index.html",
-    "main.e3878ee8.css.map": "/guitar-buddy/static/css/main.e3878ee8.css.map",
-    "main.ff6fa379.js.map": "/guitar-buddy/static/js/main.ff6fa379.js.map",
+    "main.c51c1dec.css.map": "/guitar-buddy/static/css/main.c51c1dec.css.map",
+    "main.1430bc0f.js.map": "/guitar-buddy/static/js/main.1430bc0f.js.map",
     "787.97fc553e.chunk.js.map": "/guitar-buddy/static/js/787.97fc553e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e3878ee8.css",
-    "static/js/main.ff6fa379.js"
+    "static/css/main.c51c1dec.css",
+    "static/js/main.1430bc0f.js"
   ]
 }
