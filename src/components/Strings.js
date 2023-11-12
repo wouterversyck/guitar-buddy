@@ -2,6 +2,7 @@ import "./Strings.css";
 import { beautifyNote } from "../services/helper-functions";
 import { soundNote } from "../services/audio-service";
 import { createStringsForScale, getTunings, tunings } from "./helper-functions";
+import useStickyState from "./stickyState";
 import { Switch, FormControlLabel, Select, MenuItem, Slider } from "@mui/material";
 import { useState } from "react";
 
@@ -13,9 +14,9 @@ function calcIndicator(stringNumber, fretNumber) {
 }
 
 export default function Strings({ mode }) {
-  const [showNotes, setShowNotes] = useState(false);
+  const [showNotes, setShowNotes] = useStickyState(false, "showNotes");
   const [tuning, setTuning] = useState(tunings.standard);
-  const [fretsRange, setFretsRange] = useState([0, 24]);
+  const [fretsRange, setFretsRange] = useStickyState([0, 24], "fretsRange");
   const handleShowNotesToggle = (event) => {
     setShowNotes(event.target.checked);
   };
@@ -44,7 +45,7 @@ export default function Strings({ mode }) {
         id="tuning"
         value={tuning}
         onChange={handleTuningChange}>
-          {getTunings().map(tuning => <MenuItem value={tuning} key={tuning.label}>{tuning.label}</MenuItem>)}
+          {getTunings().map(element => <MenuItem value={element} key={element.label}>{element.label}</MenuItem>)}
       </Select>
       <Slider
         getAriaLabel={() => 'Frets'}

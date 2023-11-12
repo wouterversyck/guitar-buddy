@@ -2,12 +2,13 @@ import React, { useEffect } from "react";
 
 import { MenuItem, Select } from "@mui/material";
 import { beautifyNote, keys, modes } from "../services/helper-functions";
+import useStickyState from "./stickyState";
 import { Mode, Scale } from "tonal";
 
 export default function useKeySelect() {
-  const [keyValue, setKeyValue] = React.useState(keys[0]);
-  const [modeValue, setModeValue] = React.useState(modes[0]);
-  const [mode, setMode] = React.useState();
+  const [keyValue, setKeyValue] = useStickyState(keys[0], "keyValue");
+  const [modeValue, setModeValue] = useStickyState(modes[0], "modeValue")
+  const [mode, setMode] = useStickyState(null, "mode");
 
   useEffect(() => {
     const mode = {
@@ -20,7 +21,7 @@ export default function useKeySelect() {
     }
 
     setMode(mode);
-  }, [modeValue, keyValue])
+  }, [modeValue, keyValue, setMode]);
 
   const handleKeyChange = (event) => {
     setKeyValue(event.target.value);
