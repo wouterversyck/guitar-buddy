@@ -22,8 +22,8 @@ export default function MainView() {
     <Container>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={tab} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Chords" />
           <Tab label="Fretboard" />
+          <Tab label="Chords" />
         </Tabs>
       </Box>
       <Box sx={{ mt: 5 }}>
@@ -32,11 +32,11 @@ export default function MainView() {
 
       {mode ? (
         <Box sx={{ mt: 5 }} >
-          <Box hidden={tab !== 0}>
-            <Chords mode={mode} />
-          </Box>
-          <Box sx={{ mt: 5 }} hidden={tab !== 1}>
+          <Box sx={{ mt: 5 }} hidden={tab !== 0}>
             <StyledString mode={mode} />
+          </Box>
+          <Box hidden={tab !== 1}>
+            <Chords mode={mode} />
           </Box>
         </Box>
       ) : (
