@@ -1,5 +1,5 @@
-import React from "react";
-import { Box, Container } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Container, Tabs, Tab } from "@mui/material";
 import Chords from "../components/Chords.js";
 import Strings from "../components/Strings";
 import useKeySelect from "../components/KeySelect.js";
@@ -11,19 +11,31 @@ const StyledString = styled(Strings)`
 `;
 
 export default function MainView() {
+  const [tab, setTab] = useState(0);
 
+  const handleChange = (event, newValue) => {
+    setTab(newValue);
+  };
   const [KeySelect, mode] = useKeySelect();
 
   return (
     <Container>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={tab} onChange={handleChange} aria-label="basic tabs example">
+          <Tab label="Chords" />
+          <Tab label="Fretboard" />
+        </Tabs>
+      </Box>
       <Box sx={{ mt: 5 }}>
         <KeySelect style={{margin: '100px'}} />
       </Box>
 
       {mode ? (
-        <Box sx={{ mt: 5 }}>
-          <Chords mode={mode} />
-          <Box sx={{ mt: 5 }}>
+        <Box sx={{ mt: 5 }} >
+          <Box hidden={tab !== 0}>
+            <Chords mode={mode} />
+          </Box>
+          <Box sx={{ mt: 5 }} hidden={tab !== 1}>
             <StyledString mode={mode} />
           </Box>
         </Box>

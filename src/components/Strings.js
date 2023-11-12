@@ -2,24 +2,31 @@ import "./Strings.css";
 import { beautifyNote } from "../services/helper-functions";
 import { soundNote } from "../services/audio-service";
 import { createStringsForScale, getTunings, tunings } from "./helper-functions";
-import { Switch, FormControlLabel, Select, MenuItem } from "@mui/material";
+import { Switch, FormControlLabel, Select, MenuItem, Slider } from "@mui/material";
 import { useState } from "react";
 
-function calcIndicator(position, index) {
+function calcIndicator(stringNumber, fretNumber) {
   return (
-    (position === 2 && (index === 3 || index === 5 || index === 7 || index === 9 || index === 15 || index === 17 || index === 19 || index === 21)) ||
-    ((position === 1 || position === 3) && index === 12)
+    (stringNumber === 2 && (fretNumber === 3 || fretNumber === 5 || fretNumber === 7 || fretNumber === 9 || fretNumber === 15 || fretNumber === 17 || fretNumber === 19 || fretNumber === 21)) ||
+    ((stringNumber === 1 || stringNumber === 3) && fretNumber === 12)
   );
 }
 
 export default function Strings({ mode }) {
   const [showNotes, setShowNotes] = useState(false);
   const [tuning, setTuning] = useState(tunings.standard);
+  const [fretsRange, setFretsRange] = useState([0, 24]);
   const handleShowNotesToggle = (event) => {
     setShowNotes(event.target.checked);
   };
   const handleTuningChange = (event) => {
     setTuning(event.target.value);
+  };
+  const handleChange = (event, newValue, activeThumb) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+    setFretsRange(newValue);
   };
   const data = createStringsForScale(mode.notes, tuning.tuning);
 
@@ -39,26 +46,35 @@ export default function Strings({ mode }) {
         onChange={handleTuningChange}>
           {getTunings().map(tuning => <MenuItem value={tuning} key={tuning.label}>{tuning.label}</MenuItem>)}
       </Select>
+      <Slider
+        getAriaLabel={() => 'Frets'}
+        value={fretsRange}
+        onChange={handleChange}
+        valueLabelDisplay="auto"
+        marks
+        max={24}
+        disableSwap
+      />
       <div className="strings__container">
         <div style={{marginTop: '20px', marginLeft: '10px'}}>
-          {data.map((string, index) => <SingleString key={index} notes={string} mode={mode} position={index} showNotes={showNotes}/>)}
+          {data.map((string, stringNumber) => <SingleString range={fretsRange} key={stringNumber} notes={string} mode={mode} stringNumber={stringNumber} showNotes={showNotes}/>)}
         </div>
       </div>
     </div>
   );
 }
 
-function SingleString({notes, position, mode, showNotes}) {
+function SingleString({notes, stringNumber, mode, showNotes, range}) {
     return (
-        <div className={`string string--nr-${position}`}>
-          {notes.map((note, index) =>
+        <div className={`string string--nr-${stringNumber}`}>
+          {notes.map((note, fretNumber) =>
             <div
               className="string__fret"
-              key={note + index}>
-                { calcIndicator(position, index) &&
+              key={note + fretNumber}>
+                { calcIndicator(stringNumber, fretNumber) &&
                   <span className="string__nr-indicator"></span> }
               <div
-                className={calculateClasses(note, mode)}
+                className={calculateClasses(note, mode, range, fretNumber)}
                 onClick={() =>  note && soundNote(note)}>
                   {showNotes && beautifyNote(note?.note)}
               </div>
@@ -68,11 +84,15 @@ function SingleString({notes, position, mode, showNotes}) {
     );
 }
 
-function calculateClasses(note, mode) {
+function calculateClasses(note, mode, range, fretNumber) {
   let classes = "string__note";
 
   if (!note) {
     return classes;
+  }
+  if (fretNumber < range[0] || fretNumber > range[1]) {
+      classes += " string__note--outside-range";
+      return classes;
   }
 
   classes += " string__note--present";

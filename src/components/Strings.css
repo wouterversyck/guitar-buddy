@@ -6,47 +6,51 @@
 
 .string {
   display: flex;
-  width: 690px;
+  width: 1000px;
   justify-content: center;
+  margin: auto;
 
   .string__note {
     position: relative;
-    top: -9px;
-    width: 17px;
-    height: 17px;
+    top: -10px;
+    width: 20px;
+    height: 20px;
     font-size: smaller;
     border-radius: 50%;
     margin: auto;
     color: white;
-    line-height: 1.2;
+    line-height: 1.4;
 
     &.string__note--present {
       cursor: pointer;
     }
 
-    &.string__note--present:not(.string__note--root):not(.string__note--third):not(.string__note--fifth):not(.string__note--seventh):not(.string__note--blue) {
+    &.string__note--present:not(.string__note--outside-range):not(.string__note--root):not(.string__note--third):not(.string__note--fifth):not(.string__note--seventh):not(.string__note--blue) {
       background: black;
+    }
+    &.string__note--outside-range {
+      background: gray;
     }
     &.string__note--root {
       background: red;
     }
     &.string__note--third {
-      background: green;
+      background: rgb(189, 125, 7);
     }
     &.string__note--blue {
-      background: blue;
+      background: rgb(15, 15, 156);
     }
     &.string__note--fifth {
-      background: purple;
+      background: rgb(126, 3, 126);
     }
     &.string__note--seventh {
-      background: orange;
+      background: rgb(11, 107, 11);
     }
   }
 
   .string__fret {
-    width: 45px;
-    height: 25px;
+    width: 100%;
+    height: 28px;
     text-align: center;
     box-sizing: border-box;
     position: relative;
@@ -72,6 +76,9 @@
 
       &:last-child {
         border-right: 1px solid black;
+      }
+      &:nth-child(2) {
+        border-left: 2px solid black;
       }
     }
   }

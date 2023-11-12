@@ -8,8 +8,6 @@ export default function useKeySelect() {
   const [keyValue, setKeyValue] = React.useState(keys[0]);
   const [modeValue, setModeValue] = React.useState(modes[0]);
   const [mode, setMode] = React.useState();
-  console.log(Scale.get(`${keyValue} ${modeValue}`));
-  console.log(Scale.names());
 
   useEffect(() => {
     const mode = {
