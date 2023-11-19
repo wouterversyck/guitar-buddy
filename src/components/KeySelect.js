@@ -1,23 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { MenuItem, Select } from "@mui/material";
 import { beautifyNote, keys, modes } from "../services/helper-functions";
 import useStickyState from "./stickyState";
 import { Mode, Scale } from "tonal";
+import Note from "../models/note";
+
+const createNotesArray = (scale) => scale.notes.map((note, index) => (new Note(note, scale.intervals[index])));
 
 export default function useKeySelect() {
-  const [keyValue, setKeyValue] = useStickyState(keys[0], "keyValue");
-  const [modeValue, setModeValue] = useStickyState(modes[0], "modeValue")
-  const [mode, setMode] = useStickyState(null, "mode");
+  const [keyValue, setKeyValue] = useStickyState(keys[0], "key");
+  const [modeValue, setModeValue] = useStickyState(modes[0], "mode");
+  const [mode, setMode] = useState(null);
 
   useEffect(() => {
+    const scale = Scale.get(`${keyValue} ${modeValue}`);
     const mode = {
       mode: modeValue,
       key: keyValue,
-      notes: Scale.get(`${keyValue} ${modeValue}`).notes,
-      intervals: Scale.get(`${keyValue} ${modeValue}`).intervals,
+      scaleNotes: createNotesArray(scale),
+      intervals: scale.intervals,
       chords: Mode.triads(modeValue, keyValue),
-      seventChords: Mode.seventhChords(modeValue, keyValue)
+      seventhChords: Mode.seventhChords(modeValue, keyValue)
     }
 
     setMode(mode);

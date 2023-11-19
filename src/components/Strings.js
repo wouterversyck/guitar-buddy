@@ -29,7 +29,7 @@ export default function Strings({ mode }) {
     }
     setFretsRange(newValue);
   };
-  const data = createStringsForScale(mode.notes, tuning.tuning);
+  const strings = createStringsForScale(mode.scaleNotes, tuning.tuning);
 
   return(
     <div>
@@ -58,26 +58,27 @@ export default function Strings({ mode }) {
       />
       <div className="strings__container">
         <div style={{marginTop: '20px', marginLeft: '10px'}}>
-          {data.map((string, stringNumber) => <SingleString range={fretsRange} key={stringNumber} notes={string} mode={mode} stringNumber={stringNumber} showNotes={showNotes}/>)}
+          {strings.map((string, stringNumber) =>
+            <SingleString range={fretsRange} key={stringNumber} stringNotes={string} stringNumber={stringNumber} showNotes={showNotes}/>)}
         </div>
       </div>
     </div>
   );
 }
 
-function SingleString({notes, stringNumber, mode, showNotes, range}) {
+function SingleString({stringNotes, stringNumber, showNotes, range}) {
     return (
         <div className={`string string--nr-${stringNumber}`}>
-          {notes.map((note, fretNumber) =>
+          {stringNotes.map((stringNote, fretNumber) =>
             <div
               className="string__fret"
-              key={note + fretNumber}>
+              key={fretNumber}>
                 { calcIndicator(stringNumber, fretNumber) &&
                   <span className="string__nr-indicator"></span> }
               <div
-                className={calculateClasses(note, mode, range, fretNumber)}
-                onClick={() =>  note && soundNote(note)}>
-                  {showNotes && beautifyNote(note?.note)}
+                className={calculateClasses(stringNote?.note, range, fretNumber)}
+                onClick={() =>  stringNote && soundNote(stringNote.note.note, stringNote.height)}>
+                  {showNotes && beautifyNote(stringNote?.note?.note)}
               </div>
             </div>
           )}
@@ -85,7 +86,7 @@ function SingleString({notes, stringNumber, mode, showNotes, range}) {
     );
 }
 
-function calculateClasses(note, mode, range, fretNumber) {
+function calculateClasses(note, range, fretNumber) {
   let classes = "string__note";
 
   if (!note) {
@@ -96,65 +97,5 @@ function calculateClasses(note, mode, range, fretNumber) {
       return classes;
   }
 
-  classes += " string__note--present";
-  if (note?.note === mode.notes[0]) {
-    classes += " string__note--root";
-  }
-  if (isThird(mode, note.note)) {
-    classes += " string__note--third";
-  }
-  if (isBlue(mode, note.note)) {
-    classes += " string__note--blue";
-  }
-  if (isFifth(mode, note.note)) {
-    classes += " string__note--fifth";
-  }
-  if (isSeventh(mode, note.note)) {
-    classes += " string__note--seventh";
-  }
-
-  return classes;
-}
-
-function isThird(mode, note) {
-  const { notes, intervals } = mode;
-  let index = intervals.indexOf("3m");
-  if (index === -1) {
-    index = intervals.indexOf("3M");
-  }
-  if (index === -1) {
-    return false;
-  }
-  return notes[index] === note;
-}
-
-function isSeventh(mode, note) {
-  const { notes, intervals } = mode;
-  let index = intervals.indexOf("7m");
-  if (index === -1) {
-    index = intervals.indexOf("7M");
-  }
-  if (index === -1) {
-    return false;
-  }
-  return notes[index] === note;
-}
-
-function isFifth(mode, note) {
-  const { notes, intervals } = mode;
-  let index = intervals.indexOf("5P");
-  if (index === -1) {
-    return false;
-  }
-  return notes[index] === note;
-}
-
-
-function isBlue(mode, note) {
-  const { notes, intervals } = mode;
-  let index = intervals.indexOf("5d");
-  if (index === -1) {
-    return false;
-  }
-  return notes[index] === note;
+  return classes += ` string__note--present string__note--${note.interval}`;
 }

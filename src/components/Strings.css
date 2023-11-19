@@ -6,62 +6,80 @@
 
 .string {
   display: flex;
-  width: 1000px;
+  width: 1400px;
   justify-content: center;
   margin: auto;
 
   .string__note {
     position: relative;
-    top: -10px;
-    width: 20px;
-    height: 20px;
-    font-size: smaller;
+    top: -15px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     margin: auto;
-    color: white;
-    line-height: 1.4;
+    color: black;
+    font-weight: 900;
+    line-height: 1.8;
 
     &.string__note--present {
+      border: 1px solid black;
       cursor: pointer;
-    }
-
-    &.string__note--present:not(.string__note--outside-range):not(.string__note--root):not(.string__note--third):not(.string__note--fifth):not(.string__note--seventh):not(.string__note--blue) {
-      background: black;
     }
     &.string__note--outside-range {
       background: gray;
     }
-    &.string__note--root {
+    &.string__note--1P {
       background: red;
     }
-    &.string__note--third {
-      background: rgb(189, 125, 7);
+    &.string__note--2m {
+      background: rgb(251,135,97);
     }
-    &.string__note--blue {
-      background: rgb(15, 15, 156);
+    &.string__note--2M {
+      background: rgb(253,172,101);
     }
-    &.string__note--fifth {
-      background: rgb(126, 3, 126);
+    &.string__note--3m {
+      background: rgb(253,207,96);
     }
-    &.string__note--seventh {
-      background: rgb(11, 107, 11);
+    &.string__note--3M {
+      background: rgb(255,253,102);
+    }
+    &.string__note--4P {
+      background: rgb(103,218,111);
+    }
+    &.string__note--5d {
+      background: rgb(100,163,173);
+    }
+    &.string__note--5P {
+      background: rgb(97,117,252);
+    }
+    &.string__note--6m {
+      background: rgb(118,104,197);
+    }
+    &.string__note--6M {
+      background: rgb(140,95,162);
+    }
+    &.string__note--7m {
+      background: rgb(189,130,195);
+    }
+    &.string__note--7M {
+      background: rgb(239,175,249);
     }
   }
 
   .string__fret {
     width: 100%;
-    height: 28px;
+    height: 40px;
     text-align: center;
     box-sizing: border-box;
     position: relative;
 
     &:not(:first-child) {
-      border-top: 1px solid black;
+      border-top: 1px solid white;
     }
 
     .string__nr-indicator {
       border-radius: 50%;
-      background: darkgrey;
+      background: white;
       width: 6px;
       height: 6px;
       position: absolute;
@@ -72,18 +90,14 @@
 
   &:not(.string--nr-5) {
     .string__fret:not(:first-child) {
-      border-left: 1px solid black;
+      border-left: 1px solid white;
 
       &:last-child {
-        border-right: 1px solid black;
+        border-right: 1px solid white;
       }
       &:nth-child(2) {
-        border-left: 2px solid black;
+        border-left: 2px solid white;
       }
     }
-  }
-
-  .string__fret--root {
-    color: red;
   }
 }

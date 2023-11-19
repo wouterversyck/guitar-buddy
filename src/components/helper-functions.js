@@ -9,10 +9,10 @@ function getStringWithStartingPoint(startingPoint, height, scale) {
       if (numericNote === 0) {
           height++;
       }
-      for (const note of scale) {
-          if (numericKeys[note] === numericNote) {
+      for (const scaleNote of scale) {
+          if (numericKeys[scaleNote.note] === numericNote) {
               notes[i] = {
-                  note,
+                  note: scaleNote,
                   height,
               };
               found = true;
