@@ -49,6 +49,14 @@
  */
 
 /**
+ * @mui/styled-engine v5.14.17
+ *
+ * @license MIT
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/**
  * Tone.js
  * @author Yotam Mann
  * @license http://opensource.org/licenses/MIT MIT License
