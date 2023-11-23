@@ -4,6 +4,7 @@ import { Box } from "@mui/material";
 import { Chord } from "tonal";
 import Strings from "../components/Strings";
 import useTuningSelect from "../components/TuningSelect";
+import { beautifyNote } from "../services/helper-functions";
 
 const StringsContainer = styled.div`
   overflow-x: auto;
@@ -19,6 +20,7 @@ const StyledItem = styled.span`
 export default function GuitarChordDetect () {
   const [TuningSelect, tuning] = useTuningSelect();
   const [notes, setNotes] = useState([]);
+
   return (
     <>
       <TuningSelect />
@@ -36,7 +38,7 @@ function ChordsAndNotes({ notes }) {
     <Box sx={{ mt: 2 }}>
       <Box>
         { chords.length === 0 ? <StyledItem>No chord found</StyledItem> :
-          chords.map(chord => <StyledItem key={chord}>{chord}</StyledItem>) }
+          chords.map(chord => <StyledItem key={chord}>{beautifyNote(chord)}</StyledItem>) }
       </Box>
     </Box>
   );
