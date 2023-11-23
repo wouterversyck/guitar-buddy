@@ -30,48 +30,92 @@ function getStringWithStartingPoint(startingPoint, height, scale) {
 // Create an array of strings with notes present for a certain scale and tuning
 export function createStringsForScale(scale, tuning) {
   return [
-      getStringWithStartingPoint(numericKeys[tuning.HighE], 4, scale), // High E
-      getStringWithStartingPoint(numericKeys[tuning.B], 3, scale), // B
-      getStringWithStartingPoint(numericKeys[tuning.G], 3, scale), // G
-      getStringWithStartingPoint(numericKeys[tuning.D], 3, scale), // D
-      getStringWithStartingPoint(numericKeys[tuning.A], 2, scale), // A
-      getStringWithStartingPoint(numericKeys[tuning.LowE], 2, scale), // Low E
+      getStringWithStartingPoint(numericKeys[tuning.HighE.note], tuning.HighE.height, scale),
+      getStringWithStartingPoint(numericKeys[tuning.B.note], tuning.B.height, scale),
+      getStringWithStartingPoint(numericKeys[tuning.G.note], tuning.G.height, scale),
+      getStringWithStartingPoint(numericKeys[tuning.D.note], tuning.D.height, scale),
+      getStringWithStartingPoint(numericKeys[tuning.A.note], tuning.A.height, scale),
+      getStringWithStartingPoint(numericKeys[tuning.LowE.note], tuning.LowE.height, scale),
   ]
 }
 
 export const tunings = {
   standard: {
-      label: "Standard",
-      tuning: {
-          HighE: "E",
-          B: "B",
-          G: "G",
-          D: "D",
-          A: "A",
-          LowE: "E"
-      }
+    label: "Standard",
+    tuning: {
+      HighE: { note: "E", height: 4 },
+      B: { note: "B", height: 3 },
+      G: { note: "G", height: 3 },
+      D: { note: "D", height: 3 },
+      A: { note: "A", height: 2 },
+      LowE: { note: "E", height: 2 }
+    }
   },
   half_step_down: {
-      label: "Half step down",
-      tuning: {
-          HighE: "Eb",
-          B: "Bb",
-          G: "Gb",
-          D: "Db",
-          A: "Ab",
-          LowE: "Eb"
-      }
+    label: "Half step down",
+    tuning: {
+      HighE: { note: "Eb", height: 4 },
+      B: { note: "Bb", height: 3 },
+      G: { note: "Gb", height: 3 },
+      D: { note: "Db", height: 3 },
+      A: { note: "Ab", height: 2 },
+      LowE: { note: "Eb", height: 2 }
+    }
   },
   full_step_down: {
-      label: "Full step down",
-      tuning: {
-          HighE: "D",
-          B: "G",
-          G: "F",
-          D: "C",
-          A: "G",
-          LowE: "D"
-      }
+    label: "Full step down",
+    tuning: {
+      HighE: { note: "D", height: 4 },
+      B: { note: "A", height: 3 },
+      G: { note: "F", height: 3 },
+      D: { note: "C", height: 3 },
+      A: { note: "G", height: 2 },
+      LowE: { note: "D", height: 2 }
+    }
+  },
+  drop_d: {
+    label: "Drop D",
+    tuning: {
+      HighE: { note: "E", height: 4 },
+      B: { note: "B", height: 3 },
+      G: { note: "G", height: 3 },
+      D: { note: "D", height: 3 },
+      A: { note: "A", height: 2 },
+      LowE: { note: "D", height: 2 }
+    }
+  },
+  drop_c_sharp: {
+    label: "Drop C#",
+    tuning: {
+      HighE: { note: "Eb", height: 4 },
+      B: { note: "Bb", height: 3 },
+      G: { note: "Gb", height: 3 },
+      D: { note: "Db", height: 3 },
+      A: { note: "Ab", height: 2 },
+      LowE: { note: "C#", height: 2 }
+    }
+  },
+  drop_c: {
+    label: "Drop C",
+    tuning: {
+      HighE: { note: "D", height: 4 },
+      B: { note: "A", height: 3 },
+      G: { note: "F", height: 3 },
+      D: { note: "C", height: 2 },
+      A: { note: "G", height: 2 },
+      LowE: { note: "C", height: 1 }
+    }
+  },
+  drop_b: {
+    label: "Drop B",
+    tuning: {
+      HighE: { note: "C#", height: 4 },
+      B: { note: "G#", height: 3 },
+      G: { note: "E", height: 3 },
+      D: { note: "B", height: 2 },
+      A: { note: "F#", height: 2 },
+      LowE: { note: "B", height: 1 }
+    }
   }
 };
 
