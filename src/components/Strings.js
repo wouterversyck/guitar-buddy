@@ -1,10 +1,8 @@
 import "./Strings.css";
-import { beautifyNote } from "../services/helper-functions";
+
+import { beautifyNote, chromaticC, tunings } from "../services/helper-functions";
 import { soundNote } from "../services/audio-service";
-import { createStringsForScale, getTunings, tunings } from "./helper-functions";
-import useStickyState from "./stickyState";
-import { Switch, FormControlLabel, Select, MenuItem, Slider } from "@mui/material";
-import { useState } from "react";
+import { createStringsForScale } from "../services/helper-functions";
 
 function calcIndicator(stringNumber, fretNumber) {
   return (
@@ -13,77 +11,46 @@ function calcIndicator(stringNumber, fretNumber) {
   );
 }
 
-export default function Strings({ mode }) {
-  const [showNotes, setShowNotes] = useStickyState(false, "showNotes");
-  const [tuning, setTuning] = useState(tunings.standard);
-  const [fretsRange, setFretsRange] = useStickyState([0, 24], "fretsRange");
-  const handleShowNotesToggle = (event) => {
-    setShowNotes(event.target.checked);
-  };
-  const handleTuningChange = (event) => {
-    setTuning(event.target.value);
-  };
-  const handleChange = (event, newValue, activeThumb) => {
-    if (!Array.isArray(newValue)) {
-      return;
-    }
-    setFretsRange(newValue);
-  };
+export default function Strings({ mode = chromaticC, tuning = tunings.standard, showNotes = true, fretsRange = [0, 25], selectMode = false }) {
+
   const strings = createStringsForScale(mode.scaleNotes, tuning.tuning);
 
-  return(
-    <div>
-      <FormControlLabel control={
-        <Switch
-          color="secondary"
-          checked={showNotes}
-          inputProps={{ 'aria-label': 'Color switch demo' }}
-          onChange={handleShowNotesToggle}
-        />
-      } label="Show notes" />
-      <Select
-        id="tuning"
-        value={tuning}
-        onChange={handleTuningChange}>
-          {getTunings().map(element => <MenuItem value={element} key={element.label}>{element.label}</MenuItem>)}
-      </Select>
-      <Slider
-        getAriaLabel={() => 'Frets'}
-        value={fretsRange}
-        onChange={handleChange}
-        valueLabelDisplay="auto"
-        marks
-        max={24}
-        disableSwap
-      />
-      <div className="strings__container">
-        <div style={{marginTop: '20px', marginLeft: '10px'}}>
-          {strings.map((string, stringNumber) =>
-            <SingleString range={fretsRange} key={stringNumber} stringNotes={string} stringNumber={stringNumber} showNotes={showNotes}/>)}
-        </div>
-      </div>
-    </div>
-  );
+  return (
+    <>
+    {strings.map((string, stringNumber) =>
+      <SingleString selectMode={selectMode} range={fretsRange} key={stringNumber} stringNotes={string} stringNumber={stringNumber} showNotes={showNotes}/>)}
+    </>
+  )
 }
 
-function SingleString({stringNotes, stringNumber, showNotes, range}) {
-    return (
-        <div className={`string string--nr-${stringNumber}`}>
-          {stringNotes.map((stringNote, fretNumber) =>
+
+function SingleString({stringNotes, stringNumber, showNotes, range, selectMode}) {
+  return (
+      <div className={`string string--nr-${stringNumber}`}>
+        {stringNotes.map((stringNote, fretNumber) =>
+          <div
+            className="string__fret"
+            key={fretNumber}>
+              { calcIndicator(stringNumber, fretNumber) &&
+                <span className="string__nr-indicator"></span> }
+
+            {selectMode ?
             <div
-              className="string__fret"
-              key={fretNumber}>
-                { calcIndicator(stringNumber, fretNumber) &&
-                  <span className="string__nr-indicator"></span> }
-              <div
-                className={calculateClasses(stringNote?.note, range, fretNumber)}
-                onClick={() =>  stringNote && soundNote(stringNote.note.note, stringNote.height)}>
-                  {showNotes && beautifyNote(stringNote?.note?.note)}
-              </div>
+              className={"todo"}
+              onClick={() =>  "todo"}>
+                {showNotes && beautifyNote(stringNote?.note?.note)}
             </div>
-          )}
-        </div>
-    );
+            :
+            <div
+              className={calculateClasses(stringNote?.note, range, fretNumber)}
+              onClick={() =>  stringNote && soundNote(stringNote.note.note, stringNote.height)}>
+                {showNotes && beautifyNote(stringNote?.note?.note)}
+            </div>
+            }
+          </div>
+        )}
+      </div>
+  );
 }
 
 function calculateClasses(note, range, fretNumber) {

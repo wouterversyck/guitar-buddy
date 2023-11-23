@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import { MenuItem, Select } from "@mui/material";
-import { beautifyNote, keys, modes } from "../services/helper-functions";
+import { beautifyNote, createMode, keys, modes } from "../services/helper-functions";
 import useStickyState from "./stickyState";
-import { Mode, Scale } from "tonal";
-import Note from "../models/note";
-
-const createNotesArray = (scale) => scale.notes.map((note, index) => (new Note(note, scale.intervals[index])));
 
 export default function useKeySelect() {
   const [keyValue, setKeyValue] = useStickyState(keys[0], "key");
@@ -14,17 +10,8 @@ export default function useKeySelect() {
   const [mode, setMode] = useState(null);
 
   useEffect(() => {
-    const scale = Scale.get(`${keyValue} ${modeValue}`);
-    const mode = {
-      mode: modeValue,
-      key: keyValue,
-      scaleNotes: createNotesArray(scale),
-      intervals: scale.intervals,
-      chords: Mode.triads(modeValue, keyValue),
-      seventhChords: Mode.seventhChords(modeValue, keyValue)
-    }
+    setMode(createMode(keyValue, modeValue));
 
-    setMode(mode);
   }, [modeValue, keyValue, setMode]);
 
   const handleKeyChange = (event) => {

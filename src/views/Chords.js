@@ -1,5 +1,4 @@
-
-import { Box, Paper, Button } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 import PlayIcon from '@mui/icons-material/PlayArrowRounded';
 import { useEffect, useState } from "react";
 import { Progression, Chord } from "tonal";
