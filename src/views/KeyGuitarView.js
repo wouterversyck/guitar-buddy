@@ -1,9 +1,8 @@
-import { getTunings, tunings } from "../services/helper-functions";
+import { Switch, FormControlLabel, Slider } from "@mui/material";
+import styled from "@emotion/styled";
 import useStickyState from "../components/stickyState";
 import Strings from "../components/Strings";
-import { Switch, FormControlLabel, Select, MenuItem, Slider } from "@mui/material";
-import { useState } from "react";
-import styled from "@emotion/styled";
+import useTuningSelect from "../components/TuningSelect";
 
 const StringsContainer = styled.div`
   overflow-x: auto;
@@ -13,13 +12,11 @@ const StringsContainer = styled.div`
 
 export default function KeyGuitarView({ mode }) {
   const [showNotes, setShowNotes] = useStickyState(false, "showNotes");
-  const [tuning, setTuning] = useState(tunings.standard);
   const [fretsRange, setFretsRange] = useStickyState([0, 24], "fretsRange");
+  const [TuningSelect, tuning] = useTuningSelect();
+
   const handleShowNotesToggle = (event) => {
     setShowNotes(event.target.checked);
-  };
-  const handleTuningChange = (event) => {
-    setTuning(event.target.value);
   };
   const handleChange = (event, newValue, activeThumb) => {
     if (!Array.isArray(newValue)) {
@@ -39,12 +36,7 @@ export default function KeyGuitarView({ mode }) {
           onChange={handleShowNotesToggle}
         />
       } label="Show notes" />
-      <Select
-        id="tuning"
-        value={tuning}
-        onChange={handleTuningChange}>
-          {getTunings().map(element => <MenuItem value={element} key={element.label}>{element.label}</MenuItem>)}
-      </Select>
+      <TuningSelect />
       <Slider
         getAriaLabel={() => 'Frets'}
         value={fretsRange}

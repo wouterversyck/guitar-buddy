@@ -39,5 +39,5 @@ export default function useKeySelect() {
     </div>
   )
 
-  return [component, mode]
+  return [component, mode];
 }

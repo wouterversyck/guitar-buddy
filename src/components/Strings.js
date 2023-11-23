@@ -1,4 +1,5 @@
 import "./Strings.css";
+import { useState } from "react";
 
 import { beautifyNote, chromaticC, tunings } from "../services/helper-functions";
 import { soundNote } from "../services/audio-service";
@@ -11,20 +12,34 @@ function calcIndicator(stringNumber, fretNumber) {
   );
 }
 
-export default function Strings({ mode = chromaticC, tuning = tunings.standard, showNotes = true, fretsRange = [0, 25], selectMode = false }) {
+export default function Strings({ mode = chromaticC, tuning = tunings.standard, showNotes = true, fretsRange = [0, 25], selectMode = false, noteSelected=() => {} }) {
+  const [selectedNotes, setSelectedNotes] = useState(Array(6));
+  const handleNoteSelected = (stringNumber, note) => {
+    selectedNotes[5 - stringNumber] = note;
+    setSelectedNotes([...selectedNotes]);
+    noteSelected(selectedNotes);
+  };
 
   const strings = createStringsForScale(mode.scaleNotes, tuning.tuning);
 
   return (
     <>
     {strings.map((string, stringNumber) =>
-      <SingleString selectMode={selectMode} range={fretsRange} key={stringNumber} stringNotes={string} stringNumber={stringNumber} showNotes={showNotes}/>)}
+      <SingleString noteSelected={(note)=> handleNoteSelected(stringNumber, note)} selectMode={selectMode} range={fretsRange} key={stringNumber} stringNotes={string} stringNumber={stringNumber} showNotes={showNotes}/>)}
     </>
   )
 }
 
 
-function SingleString({stringNotes, stringNumber, showNotes, range, selectMode}) {
+function SingleString({stringNotes, stringNumber, showNotes, range, selectMode, noteSelected = ()=>{}}) {
+  const [selectedFret, setSelectedFret] = useState(null);
+
+  const handleSelectedFret = (fretNumber) => {
+    const selected = fretNumber === selectedFret ? null : fretNumber;
+    setSelectedFret(selected);
+    noteSelected(selected == null ? null : stringNotes[fretNumber].note.note);
+  };
+
   return (
       <div className={`string string--nr-${stringNumber}`}>
         {stringNotes.map((stringNote, fretNumber) =>
@@ -36,8 +51,8 @@ function SingleString({stringNotes, stringNumber, showNotes, range, selectMode})
 
             {selectMode ?
             <div
-              className={"todo"}
-              onClick={() =>  "todo"}>
+              className={selectedFret === fretNumber ? "string__note string__note--select string__note--select--selected" : "string__note string__note--select"}
+              onClick={() => handleSelectedFret(fretNumber)}>
                 {showNotes && beautifyNote(stringNote?.note?.note)}
             </div>
             :
