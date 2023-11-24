@@ -15,6 +15,10 @@ const StringsContainer = styled.div`
 
 const StyledItem = styled.span`
   margin: 10px;
+  cursor: pointer;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 `;
 
 export default function GuitarChordDetect () {
@@ -37,8 +41,10 @@ export default function GuitarChordDetect () {
       <TuningSelect />
       <Box sx={{mt: 2 }}>
         <Button onClick={() => setKey(key + 1)}>Reset</Button>
-        { chords.length === 0 ? <StyledItem>No chord found</StyledItem> :
-        chords.map(chord => <StyledItem onClick={handlePlayChord} key={chord}>{beautifyNote(chord)}</StyledItem>) }
+        { chords.length === 0 ? <StyledItem onClick={handlePlayChord} >No chord found</StyledItem> :
+        (<span onClick={handlePlayChord}>
+          { chords.map(chord => <StyledItem key={chord}>{beautifyNote(chord)}</StyledItem>) }
+        </span>)}
       </Box>
       <StringsContainer>
         <Strings key={key} selectMode={true} noteSelected={setNotes} tuning={tuning} />
