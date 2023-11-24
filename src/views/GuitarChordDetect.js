@@ -32,7 +32,8 @@ export default function GuitarChordDetect () {
   }, [notes]);
 
   const handlePlayChord = () => {
-    const notesToPlay = notes.filter(e => e).map(e => e.note + e.height);
+    // Increase the height by one (it's a bit too low)
+    const notesToPlay = notes.filter(e => e).map(e => e.note + (parseInt(e.height) + 1));
     soundNotesWithHeight(notesToPlay);
   }
 
