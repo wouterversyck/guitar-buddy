@@ -22,20 +22,14 @@ export default function Strings({ mode = chromaticC, tuning = tunings.standard, 
   }, [mode, tuning]);
 
   useEffect(() => {
-    var selectedNotes = selectedFrets.map(
-      (fretNumber, stringNumber) => {
-        return fretNumber == null ? null : strings[stringNumber][fretNumber].note.note;
-      }).reverse();
+    var selectedNotes = mapNotes(selectedFrets, strings);
     noteSelected(selectedNotes);
   }, [strings, selectedFrets, noteSelected]);
 
   const handleFretSelected = (stringNumber, fretNumber) => {
     selectedFrets[stringNumber] = fretNumber;
     setSelectedFrets([...selectedFrets]);
-    var selectedNotes = selectedFrets.map(
-      (fretNumber, stringNumber) => {
-        return fretNumber == null ? null : strings[stringNumber][fretNumber].note.note;
-      }).reverse();
+    var selectedNotes = mapNotes(selectedFrets, strings);
     noteSelected(selectedNotes);
   };
 
@@ -103,4 +97,13 @@ function calculateClasses(note, range, fretNumber) {
   }
 
   return classes += ` string__note--present string__note--${note.interval}`;
+}
+
+function mapNotes(frets, strings) {
+  return frets.map((fretNumber, stringNumber) => {
+    return fretNumber == null ? null : ({
+      note: strings[stringNumber][fretNumber].note.note,
+      height: strings[stringNumber][fretNumber].height
+    })
+  }).reverse();
 }

@@ -15,18 +15,22 @@ export function soundNote(note, height) {
 
 export function soundNotes(notes) {
   const noteValues = [notes.length];
-  const height = 3;
+  let height = 4;
 
   notes.forEach((note, index) => {
     if (index > 0) {
-      if (numericKeys[note] < notes[index-1]) {
+      if (numericKeys[note] < numericKeys[notes[index-1]]) {
         height++;
       };
     }
     noteValues[index] = note + height;
   });
+  soundNotesWithHeight(noteValues);
+}
+
+export function soundNotesWithHeight(notes) {
   const time = now();
 
-  noteValues.forEach((note, index) => sampler.triggerAttack(note, time + index / 2));
-  sampler.triggerRelease(noteValues, time + 3);
+  notes.forEach((note, index) => sampler.triggerAttack(note, time + index / 4));
+  sampler.triggerRelease(notes, time + 5);
 }
