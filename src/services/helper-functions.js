@@ -126,7 +126,7 @@ export function getTunings() {
   return Object.entries(tunings).map(e => tunings[e[0]]);
 }
 
-const numericKeys = {
+export const numericKeys = {
   "B#": 0,
   "C": 0,
   "C#": 1,

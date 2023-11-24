@@ -1,4 +1,5 @@
 import { now, Sampler } from 'tone';
+import { numericKeys } from './helper-functions';
 
 const sampler = new Sampler({
 	urls: {
@@ -13,7 +14,17 @@ export function soundNote(note, height) {
 }
 
 export function soundNotes(notes) {
-  const noteValues = notes.map(e => e + "4");
+  const noteValues = [notes.length];
+  const height = 3;
+
+  notes.forEach((note, index) => {
+    if (index > 0) {
+      if (numericKeys[note] < notes[index-1]) {
+        height++;
+      };
+    }
+    noteValues[index] = note + height;
+  });
   const time = now();
 
   noteValues.forEach((note, index) => sampler.triggerAttack(note, time + index / 2));
