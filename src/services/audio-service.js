@@ -1,15 +1,21 @@
-import { now, PolySynth } from 'tone';
+import { now, Sampler } from 'tone';
 
-const synth = new PolySynth().toDestination();
+const sampler = new Sampler({
+	urls: {
+		"C4": "string-C4.wav",
+	},
+	release: 1,
+	baseUrl: "https://wouterversyck.github.io/guitar-buddy/",
+}).toDestination();
 
 export function soundNote(note, height) {
-  synth.triggerAttackRelease(note + height, 1);
+  sampler.triggerAttackRelease(note + height, 1);
 }
 
 export function soundNotes(notes) {
   const noteValues = notes.map(e => e + "4");
   const time = now();
 
-  noteValues.forEach((note, index) => synth.triggerAttack(note, time + index / 2));
-  synth.triggerRelease(noteValues, time + 3);
+  noteValues.forEach((note, index) => sampler.triggerAttack(note, time + index / 2));
+  sampler.triggerRelease(noteValues, time + 3);
 }
