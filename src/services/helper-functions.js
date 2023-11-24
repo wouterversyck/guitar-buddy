@@ -1,4 +1,4 @@
-import { Mode, Scale } from "tonal";
+import { Mode, Scale, Chord } from "tonal";
 import Note from "../models/note";
 
 
@@ -191,3 +191,17 @@ export function createMode(key, mode) {
 }
 
 export const chromaticC = createMode("C", "chromatic");
+
+export const detectChord = (notes) => Chord.detect(notes, { assumePerfectFifth: true })
+  ?.sort((a, b) => a.length - b.length)
+  .map(chord => {
+    if (!chord) {
+      return chord;
+    }
+
+    if (chord.length === 2 && chord[1] === 'M') {
+      return chord[0];
+    }
+
+    return chord;
+  });

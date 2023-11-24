@@ -1,5 +1,5 @@
 import "./Strings.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { beautifyNote, chromaticC, tunings } from "../services/helper-functions";
 import { soundNote } from "../services/audio-service";
@@ -12,32 +12,55 @@ function calcIndicator(stringNumber, fretNumber) {
   );
 }
 
-export default function Strings({ mode = chromaticC, tuning = tunings.standard, showNotes = true, fretsRange = [0, 25], selectMode = false, noteSelected=() => {} }) {
-  const [selectedNotes, setSelectedNotes] = useState(Array(6));
-  const handleNoteSelected = (stringNumber, note) => {
-    selectedNotes[5 - stringNumber] = note;
-    setSelectedNotes([...selectedNotes]);
+export default function Strings({ mode = chromaticC, tuning = tunings.standard, showNotes = true, fretsRange = [0, 25], selectMode = false, noteSelected=() => {}}) {
+  const [selectedFrets, setSelectedFrets] = useState(Array(6));
+  const [strings, setStrings] = useState([]);
+
+  useEffect(() => {
+    const s = createStringsForScale(mode.scaleNotes, tuning.tuning);
+    setStrings(s);
+  }, [mode, tuning]);
+
+  useEffect(() => {
+    var selectedNotes = selectedFrets.map(
+      (fretNumber, stringNumber) => {
+        return fretNumber == null ? null : strings[stringNumber][fretNumber].note.note;
+      }).reverse();
+    noteSelected(selectedNotes);
+  }, [strings, selectedFrets, noteSelected]);
+
+  const handleFretSelected = (stringNumber, fretNumber) => {
+    selectedFrets[stringNumber] = fretNumber;
+    setSelectedFrets([...selectedFrets]);
+    var selectedNotes = selectedFrets.map(
+      (fretNumber, stringNumber) => {
+        return fretNumber == null ? null : strings[stringNumber][fretNumber].note.note;
+      }).reverse();
     noteSelected(selectedNotes);
   };
-
-  const strings = createStringsForScale(mode.scaleNotes, tuning.tuning);
 
   return (
     <>
     {strings.map((string, stringNumber) =>
-      <SingleString noteSelected={(note)=> handleNoteSelected(stringNumber, note)} selectMode={selectMode} range={fretsRange} key={stringNumber} stringNotes={string} stringNumber={stringNumber} showNotes={showNotes}/>)}
+      <SingleString
+        fretSelected={(fretNumber)=> handleFretSelected(stringNumber, fretNumber)}
+        selectMode={selectMode}
+        range={fretsRange}
+        key={stringNumber}
+        selectedFret={selectedFrets[stringNumber]}
+        stringNotes={string}
+        stringNumber={stringNumber}
+        showNotes={showNotes}/>)}
     </>
   )
 }
 
 
-function SingleString({stringNotes, stringNumber, showNotes, range, selectMode, noteSelected = ()=>{}}) {
-  const [selectedFret, setSelectedFret] = useState(null);
+function SingleString({stringNotes, stringNumber, showNotes, range, selectMode, selectedFret, fretSelected = ()=>{}}) {
 
   const handleSelectedFret = (fretNumber) => {
     const selected = fretNumber === selectedFret ? null : fretNumber;
-    setSelectedFret(selected);
-    noteSelected(selected == null ? null : stringNotes[fretNumber].note.note);
+    fretSelected(selected);
   };
 
   return (

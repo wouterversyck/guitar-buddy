@@ -51,6 +51,9 @@
     &.string__note--4P {
       background: rgb(103,218,111);
     }
+    &.string__note--4A {
+      background: rgb(100,163,173);
+    }
     &.string__note--5d {
       background: rgb(100,163,173);
     }
