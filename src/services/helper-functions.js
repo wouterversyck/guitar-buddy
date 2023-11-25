@@ -1,4 +1,4 @@
-import { Mode, Scale, Chord } from "tonal";
+import { Mode, Scale, Chord, ChordType } from "tonal";
 import Note from "../models/note";
 
 
@@ -205,3 +205,5 @@ export const detectChord = (notes) => Chord.detect(notes, { assumePerfectFifth: 
 
     return chord;
   });
+
+  export const chordTypeNames = ChordType.all().map(e => e.name ? e.name : e.aliases[0]);

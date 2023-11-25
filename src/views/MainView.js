@@ -5,6 +5,7 @@ import Strings from "./KeyGuitarView.js";
 import useKeySelect from "../components/KeySelect.js";
 import styled from "@emotion/styled";
 import ChordDetect from "./GuitarChordDetect.js";
+import FindChordsAndNotes from "./FindChordsAndNotes.js";
 
 const StyledString = styled(Strings)`
   margin-top: 100px;
@@ -14,6 +15,7 @@ const StyledString = styled(Strings)`
 const tabs = [
   { label: 'Fretboard', component: StyledString },
   { label: 'Chords', component: Chords },
+  { label: 'Find chords and notes', component: FindChordsAndNotes },
   { label: 'Detect chords', component: ChordDetect }
 ];
 
@@ -33,7 +35,7 @@ export default function MainView() {
         </Tabs>
       </Box>
       {/* Dont show KeySelect on chord detect screen */}
-      <Box sx={{ mt: 5 }} hidden={selectedTab === 2}>
+      <Box sx={{ mt: 5 }} hidden={selectedTab > 1}>
         <KeySelect style={{margin: '100px'}} />
       </Box>
 
