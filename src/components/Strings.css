@@ -40,7 +40,13 @@
     &.string__note--2m {
       background: rgb(251,135,97);
     }
+    &.string__note--9m {
+      background: rgb(251,135,97);
+    }
     &.string__note--2M {
+      background: rgb(253,172,101);
+    }
+    &.string__note--9M {
       background: rgb(253,172,101);
     }
     &.string__note--3m {
@@ -55,8 +61,14 @@
     &.string__note--4A {
       background: rgb(100,163,173);
     }
+    &.string__note--11A {
+      background: rgb(100,163,173);
+    }
     &.string__note--5d {
       background: rgb(100,163,173);
+    }
+    &.string__note--5A {
+      background: rgb(97,117,252);
     }
     &.string__note--5P {
       background: rgb(97,117,252);
@@ -64,7 +76,13 @@
     &.string__note--6m {
       background: rgb(118,104,197);
     }
+    &.string__note--13m {
+      background: rgb(118,104,197);
+    }
     &.string__note--6M {
+      background: rgb(140,95,162);
+    }
+    &.string__note--13M {
       background: rgb(140,95,162);
     }
     &.string__note--7m {

@@ -1,7 +1,6 @@
 import { Mode, Scale, Chord, ChordType } from "tonal";
 import Note from "../models/note";
 
-
 // Go over all 24 frets and calculate if a note of the scale is found at the fret for this string
 function getStringWithStartingPoint(startingPoint, height, scale) {
   const notes = [];
@@ -180,6 +179,14 @@ export function beautifyNote(note) {
 
 const createNotesArray = (scale) => scale.notes.map((note, index) => (new Note(note, scale.intervals[index])));
 
+export function createChord(key, type) {
+  const chord = Chord.getChord(type, key);
+  return {
+    intervals: chord.intervals,
+    scaleNotes: createNotesArray(chord)
+  };
+}
+
 export function createMode(key, mode) {
   const scale = Scale.get(`${key} ${mode}`);
 
@@ -219,4 +226,5 @@ export const detectChord = (notes) => Chord.detect(notes, { assumePerfectFifth: 
     return chord;
   });
 
-  export const chordTypeNames = ChordType.all().map(e => e.name ? e.name : e.aliases[0]);
+  export const chordTypeNames = ChordType.symbols();
+

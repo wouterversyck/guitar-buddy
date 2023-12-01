@@ -1,6 +1,7 @@
-import { Switch, FormControlLabel, Slider } from "@mui/material";
+import { Switch, FormControlLabel } from "@mui/material";
 import styled from "@emotion/styled";
 import useStickyState from "../components/stickyState";
+import useFretsSlider from "../components/FretsSlider";
 import Strings from "../components/Strings";
 import useTuningSelect from "../components/TuningSelect";
 
@@ -12,19 +13,12 @@ const StringsContainer = styled.div`
 
 export default function KeyGuitarView({ mode }) {
   const [showNotes, setShowNotes] = useStickyState(false, "showNotes");
-  const [fretsRange, setFretsRange] = useStickyState([0, 24], "fretsRange");
+  const [FretsSlider, fretsRange] = useFretsSlider("fretsKeyView");
   const [TuningSelect, tuning] = useTuningSelect();
 
   const handleShowNotesToggle = (event) => {
     setShowNotes(event.target.checked);
   };
-  const handleChange = (event, newValue, activeThumb) => {
-    if (!Array.isArray(newValue)) {
-      return;
-    }
-    setFretsRange(newValue);
-  };
-
 
   return(
     <div>
@@ -37,15 +31,7 @@ export default function KeyGuitarView({ mode }) {
         />
       } label="Show notes" />
       <TuningSelect />
-      <Slider
-        getAriaLabel={() => 'Frets'}
-        value={fretsRange}
-        onChange={handleChange}
-        valueLabelDisplay="auto"
-        marks
-        max={24}
-        disableSwap
-      />
+      <FretsSlider />
       <StringsContainer>
         <div style={{marginTop: '20px', marginLeft: '10px'}}>
           <Strings mode={mode} tuning={tuning} showNotes={showNotes} fretsRange={fretsRange} />
