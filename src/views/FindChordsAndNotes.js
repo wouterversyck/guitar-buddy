@@ -13,6 +13,10 @@ const StringsContainer = styled.div`
   overflow-y: hidden;
 `;
 
+const Note = styled.span`
+  padding: 5px;
+`;
+
 export default function FindChordsAndNotes() {
   const [TuningSelect, tuning] = useTuningSelect();
   const [FretsSlider, fretsRange] = useFretsSlider();
@@ -51,8 +55,10 @@ export default function FindChordsAndNotes() {
       <Box>
         <TuningSelect />
       </Box>
+      <Box mt={2}>
+        {chord?.scaleNotes.map(e => (<Note>{e.note}</Note>))}
+      </Box>
       <FretsSlider />
-
       <StringsContainer>
         <Strings mode={chord} showNotes={true} tuning={tuning} fretsRange={fretsRange} />
       </StringsContainer>

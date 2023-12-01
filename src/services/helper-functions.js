@@ -226,5 +226,22 @@ export const detectChord = (notes) => Chord.detect(notes, { assumePerfectFifth: 
     return chord;
   });
 
-  export const chordTypeNames = ChordType.symbols();
+export const chordTypeNames = ChordType.symbols().sort((a, b) => a.length - b.length).sort((a, b) => {
+  // First, compare by length
+  if (a.length !== b.length) {
+    return a.length - b.length;
+  }
 
+  // If lengths are the same, compare by the starting character
+  if (isNaN(a[0]) && isNaN(b[0])) {
+    // Both start with letters, compare normally
+    return a.localeCompare(b);
+  } else if (!isNaN(a[0]) && !isNaN(b[0])) {
+    // Both start with numbers, compare normally
+    return a.localeCompare(b);
+  } else {
+    // One starts with a letter and the other with a number
+    // Strings starting with letters come before those starting with numbers
+    return isNaN(a[0]) ? -1 : 1;
+  }
+});

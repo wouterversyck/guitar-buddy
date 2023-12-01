@@ -52,6 +52,9 @@
     &.string__note--3m {
       background: rgb(253,207,96);
     }
+    &.string__note--10m {
+      background: rgb(253,207,96);
+    }
     &.string__note--3M {
       background: rgb(255,253,102);
     }
