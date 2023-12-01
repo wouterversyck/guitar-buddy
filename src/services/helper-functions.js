@@ -134,7 +134,6 @@ export const numericKeys = {
   "D#": 3,
   "Eb": 3,
   "E": 4,
-  "Fb": 4,
   "F": 5,
   "E#": 5,
   "F#": 6,
@@ -146,7 +145,6 @@ export const numericKeys = {
   "A#": 10,
   "Bb": 10,
   "B": 11,
-  "Cb": 11
 };
 
 export const keys = [
@@ -177,10 +175,27 @@ export function beautifyNote(note) {
   return note.replace("b", "♭").replace("#", "♯");
 }
 
+function normalizeNote(note) {
+  if (note === "Ebb") {
+    return "D";
+  }
+  if (note === "Bbb") {
+    return "A"
+  }
+  if (note === "Fb") {
+    return "E"
+  }
+  if (note === "Cb") {
+    return "B"
+  }
+  return note;
+}
 const createNotesArray = (scale) => scale.notes.map((note, index) => (new Note(note, scale.intervals[index])));
 
 export function createChord(key, type) {
   const chord = Chord.getChord(type, key);
+  chord.notes = chord.notes.map(normalizeNote);
+
   return {
     intervals: chord.intervals,
     scaleNotes: createNotesArray(chord)
@@ -190,15 +205,7 @@ export function createChord(key, type) {
 export function createMode(key, mode) {
   const scale = Scale.get(`${key} ${mode}`);
 
-  scale.notes = scale.notes.map(e => {
-    if (e === "Ebb") {
-      return "D";
-    }
-    if (e === "Bbb") {
-      return "A"
-    }
-    return e;
-  });
+  scale.notes = scale.notes.map(normalizeNote);
 
   return {
     mode: mode,
@@ -245,3 +252,4 @@ export const chordTypeNames = ChordType.symbols().sort((a, b) => a.length - b.le
     return isNaN(a[0]) ? -1 : 1;
   }
 });
+
