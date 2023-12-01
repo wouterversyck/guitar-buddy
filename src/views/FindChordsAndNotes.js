@@ -19,7 +19,7 @@ const Note = styled.span`
 
 export default function FindChordsAndNotes() {
   const [TuningSelect, tuning] = useTuningSelect();
-  const [FretsSlider, fretsRange] = useFretsSlider();
+  const [FretsSlider, fretsRange] = useFretsSlider("findChordsAndNotesFretSlider");
   const [key, setKey] = useState(keys[0]);
   const [chordType, setChordType] = useState(chordTypeNames[0]);
   const [chord, setChord] = useState();

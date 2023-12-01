@@ -13,7 +13,7 @@ const StringsContainer = styled.div`
 
 export default function KeyGuitarView({ mode }) {
   const [showNotes, setShowNotes] = useStickyState(false, "showNotes");
-  const [FretsSlider, fretsRange] = useFretsSlider("fretsKeyView");
+  const [FretsSlider, fretsRange] = useFretsSlider("keyGuitarViewFretsSlider");
   const [TuningSelect, tuning] = useTuningSelect();
 
   const handleShowNotesToggle = (event) => {
