@@ -20,6 +20,7 @@ const Thead = styled.thead`
 const Td = styled.td`
   padding: 15px;
   cursor: pointer;
+  user-select: none;
 `;
 
 const Note = styled.span`
