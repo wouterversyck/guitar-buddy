@@ -30,7 +30,13 @@ export default function MainView() {
   return (
     <Container>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={selectedTab} onChange={handleChange} aria-label="basic tabs example">
+        <Tabs
+          value={selectedTab}
+          onChange={handleChange}
+          aria-label="menu"
+          variant="scrollable"
+          allowScrollButtonsMobile
+          scrollButtons="auto">
           { tabs.map(tab => <Tab key={tab.label} label={tab.label} />) }
         </Tabs>
       </Box>
