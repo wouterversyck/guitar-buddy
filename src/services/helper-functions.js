@@ -147,6 +147,7 @@ export const numericKeys = {
   "A#": 10,
   "Bb": 10,
   "B": 11,
+  "Cb": 11
 };
 
 export const keys = [
@@ -178,16 +179,28 @@ export function beautifyNote(note) {
 }
 
 const createNotesArray = (scale) => scale.notes.map((note, index) => (new Note(note, scale.intervals[index])));
+
 export function createMode(key, mode) {
   const scale = Scale.get(`${key} ${mode}`);
-    return {
-      mode: mode,
-      key: key,
-      scaleNotes: createNotesArray(scale),
-      intervals: scale.intervals,
-      chords: Mode.triads(mode, key),
-      seventhChords: Mode.seventhChords(mode, key)
-    };
+
+  scale.notes = scale.notes.map(e => {
+    if (e === "Ebb") {
+      return "D";
+    }
+    if (e === "Bbb") {
+      return "A"
+    }
+    return e;
+  });
+
+  return {
+    mode: mode,
+    key: key,
+    scaleNotes: createNotesArray(scale),
+    intervals: scale.intervals,
+    chords: Mode.triads(mode, key),
+    seventhChords: Mode.seventhChords(mode, key)
+  };
 }
 
 export const chromaticC = createMode("C", "chromatic");
